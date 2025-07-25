@@ -30,11 +30,7 @@ public class Livro {
     }
 
     public void emprestar() {
-        if(this.disponivel){
-            this.disponivel = false;
-        }else{
-            System.out.println("O livro já está emprestado.");
-        }
+        this.disponivel = false;
     }
 
     public void devolver() {

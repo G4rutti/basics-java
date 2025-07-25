@@ -17,11 +17,19 @@ public class SistemaBiblioteca {
             System.out.println("4. Devolver um Livro");
             System.out.println("5. Sair");
             System.out.print("Escolha uma opção: ");
-            opcao = Integer.parseInt(scanner.nextLine());
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                opcao = 6;
+            }
 
             switch (opcao) {
                 case 1:
-                    adicionarLivro(scanner, biblioteca);
+                    try {
+                        adicionarLivro(scanner, biblioteca);
+                    } catch (Exception e) {
+                        System.out.println("Um erro ocorreu ao tentar adicionar o livro");
+                    }
                     break;
                 case 2:
                     biblioteca.listarLivros();
@@ -37,11 +45,9 @@ public class SistemaBiblioteca {
                     System.out.println("Saindo!!");
                     break;
                 default:
+                    System.out.println("Você digitou um número errado.");
                     break;
-
-
             }
-
         } while (opcao != 5);
     }
 
@@ -66,7 +72,7 @@ public class SistemaBiblioteca {
         }
     }
 
-    public static void adicionarLivro (Scanner scanner, Biblioteca biblioteca) {
+    public static void adicionarLivro(Scanner scanner, Biblioteca biblioteca) {
 
         System.out.print("Digite o nome do livro: ");
         String nomeLivro = scanner.nextLine();
@@ -84,26 +90,30 @@ public class SistemaBiblioteca {
         System.out.println();
     }
 
-    public static void emprestarLivro (Scanner scanner, Biblioteca biblioteca) {
+    public static void emprestarLivro(Scanner scanner, Biblioteca biblioteca) {
         System.out.println("Digite o livro deseja pegar emprestado:");
         String livroDesejado = scanner.nextLine();
         Livro livro = biblioteca.buscarLivroPorTitulo(livroDesejado);
-        if(livro != null){
-            livro.emprestar();
-            System.out.println("O livro emprestado!");
-        }else{
+        if (livro != null) {
+            if(livro.isDisponivel()){
+                livro.emprestar();
+                System.out.println("O livro foi emprestado!");
+                return;
+            }
+            System.out.println("O livro já está emprestado para outra pessoa");
+        } else {
             System.out.println("O livro que deseja não tem em nosso acervo.");
         }
     }
 
-    public static void devolverLivro (Scanner scanner, Biblioteca biblioteca) {
+    public static void devolverLivro(Scanner scanner, Biblioteca biblioteca) {
         System.out.println("Digite o livro deseja devolver:");
         String livroDesejado = scanner.nextLine();
         Livro livro = biblioteca.buscarLivroPorTitulo(livroDesejado);
-        if(livro != null){
+        if (livro != null) {
             livro.devolver();
             System.out.println("O livro devolvido!");
-        }else{
+        } else {
             System.out.println("O livro que deseja devolver nunca existiu em nosso acervo.");
         }
     }
