@@ -1,4 +1,4 @@
-package Biblioteca;
+package BibliotecaSemJDBC;
 
 import java.util.ArrayList;
 

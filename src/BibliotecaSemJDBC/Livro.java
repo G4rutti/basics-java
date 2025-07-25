@@ -1,4 +1,4 @@
-package Biblioteca;
+package BibliotecaSemJDBC;
 
 public class Livro {
     private final String titulo;
