@@ -1,4 +1,5 @@
 package BibliotecaComJDBC;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -6,7 +7,6 @@ public class SistemaBiblioteca {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Biblioteca biblioteca = new Biblioteca();
-        LivroDAO livroDAO = new LivroDAO();
         int opcao = 5;
 
         do {
@@ -32,7 +32,7 @@ public class SistemaBiblioteca {
                     }
                     break;
                 case 2:
-                    livroDAO.listarLivros();
+                    biblioteca.listarLivros();
                     System.out.println();
                     break;
                 case 3:
@@ -68,7 +68,7 @@ public class SistemaBiblioteca {
             System.out.println("Livro encontrado!");
 //            livroPesquisa.emprestar();
             System.out.println("------------------");
-            livroDAO.listarLivros();
+            minhaBiblioteca.listarLivros();
         } else {
             System.out.println("Livro não encontrado!");
         }
