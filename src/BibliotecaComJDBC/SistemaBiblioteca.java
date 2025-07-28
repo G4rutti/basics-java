@@ -1,5 +1,4 @@
 package BibliotecaComJDBC;
-
 import java.util.Scanner;
 
 
@@ -64,7 +63,7 @@ public class SistemaBiblioteca {
         Livro livroPesquisa = minhaBiblioteca.buscarLivroPorTitulo("1984 diários");
         if (livroPesquisa != null) {
             System.out.println("Livro encontrado!");
-            livroPesquisa.emprestar();
+//            livroPesquisa.emprestar();
             System.out.println("------------------");
             minhaBiblioteca.listarLivros();
         } else {
@@ -92,11 +91,12 @@ public class SistemaBiblioteca {
 
     public static void emprestarLivro(Scanner scanner, Biblioteca biblioteca) {
         System.out.println("Digite o livro deseja pegar emprestado:");
+        LivroDAO livroDao = new LivroDAO();
         String livroDesejado = scanner.nextLine();
         Livro livro = biblioteca.buscarLivroPorTitulo(livroDesejado);
         if (livro != null) {
             if(livro.isDisponivel()){
-                livro.emprestar();
+                livroDao.emprestar(livro);
                 System.out.println("O livro foi emprestado!");
                 return;
             }
@@ -108,10 +108,11 @@ public class SistemaBiblioteca {
 
     public static void devolverLivro(Scanner scanner, Biblioteca biblioteca) {
         System.out.println("Digite o livro deseja devolver:");
+        LivroDAO livroDao = new LivroDAO();
         String livroDesejado = scanner.nextLine();
         Livro livro = biblioteca.buscarLivroPorTitulo(livroDesejado);
         if (livro != null) {
-            livro.devolver();
+            livroDao.devolver(livro);
             System.out.println("O livro devolvido!");
         } else {
             System.out.println("O livro que deseja devolver nunca existiu em nosso acervo.");

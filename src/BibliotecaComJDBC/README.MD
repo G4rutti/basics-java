@@ -1,82 +1,75 @@
+# Sistema de Gerenciamento de Biblioteca com Banco de Dados 📚
 
-Este é um projeto de console simples, desenvolvido em Java, com o objetivo de aplicar e solidificar os conceitos fundamentais da Programação Orientada a Objetos (POO). O sistema simula as operações básicas de uma biblioteca, como adicionar, listar e gerenciar o empréstimo e a devolução de livros.
+Este projeto é uma evolução de um sistema de console em Java, agora utilizando **JDBC** para persistir os dados em um banco de dados **MySQL**. O objetivo é demonstrar a integração de uma aplicação Java com um banco de dados relacional e introduzir a separação de responsabilidades através do padrão de projeto **DAO (Data Access Object)**.
 
-Este projeto foi criado como um exercício prático de aprendizado, focado na clareza do código e na aplicação de boas práticas de POO.
+O sistema simula as operações básicas de uma biblioteca, garantindo que todas as informações sobre os livros sejam salvas permanentemente.
 
 ## ✨ Funcionalidades
 
-* **Adicionar Livros:** Permite ao usuário cadastrar novos livros no acervo, informando título, autor e ano de publicação.
-* **Listar Livros:** Exibe todos os livros cadastrados, mostrando suas informações completas e seu status atual (Disponível ou Emprestado).
-* **Emprestar Livros:** Permite que um livro disponível seja marcado como "Emprestado".
-* **Devolver Livros:** Permite que um livro emprestado seja marcado como "Disponível".
-* **Busca Flexível:** A busca por livros para empréstimo ou devolução não diferencia letras maiúsculas de minúsculas.
-* **Menu Interativo:** O sistema é operado através de um menu de console simples e intuitivo.
+* **Persistência de Dados:** Todas as informações são salvas em um banco de dados MySQL, garantindo que os dados não sejam perdidos ao fechar a aplicação.
+* **Adicionar Livros:** Cadastra novos livros diretamente no banco de dados.
+* **Listar Livros:** Exibe todos os livros consultando o banco de dados em tempo real.
+* **Emprestar e Devolver Livros:** Altera o status de disponibilidade de um livro, atualizando o registro correspondente no banco.
+* **Menu Interativo:** O sistema continua a ser operado através de um menu de console simples e intuitivo.
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Tecnologias e Conceitos Aplicados
 
 * **Java**: Linguagem principal do projeto.
-* **JDK (Java Development Kit)**: Necessário para compilar e executar o código.
+* **JDBC (Java Database Connectivity)**: API padrão do Java para conexão com bancos de dados.
+* **MySQL**: Sistema de Gerenciamento de Banco de Dados Relacional utilizado para armazenar os dados.
+* **Padrão de Projeto DAO (Data Access Object)**: Utilizado para separar a lógica de acesso a dados da lógica de negócios da aplicação.
 
-## 🧠 Conceitos de POO Aplicados
+## ⚙️ Pré-requisitos e Configuração
 
-Este projeto foi uma oportunidade para praticar os pilares da Programação Orientada a Objetos:
+Para executar este projeto, você precisará ter o seguinte ambiente configurado:
 
-* **Classes e Objetos:** Modelagem do mundo real através das classes `Livro` (representando um objeto livro) e `Biblioteca` (representando o acervo).
-* **Encapsulamento:** Proteção dos atributos das classes (ex: `titulo`, `acervo`) como `private`, expondo o acesso controlado através de métodos públicos (`getters`, `emprestar()`, etc.).
-* **Abstração:** A classe `SistemaBiblioteca` interage com um objeto `Biblioteca` de forma simples (`adicionarLivro()`, `listarLivros()`), sem precisar conhecer os detalhes complexos de como a lista de livros (`ArrayList`) é gerenciada internamente.
-* **Composição:** A classe `Biblioteca` *tem uma* coleção de objetos `Livro`, demonstrando a relação de composição entre objetos.
+1.  **JDK (Java Development Kit)**: Versão 8 ou superior.
+2.  **MySQL Server**: O servidor de banco de dados onde os dados serão armazenados.
+3.  **MySQL Connector/J**: O driver JDBC para MySQL. Você pode baixá-lo [aqui](https://dev.mysql.com/downloads/connector/j/) e precisa adicioná-lo ao classpath do seu projeto.
 
-## ⚙️ Como Executar o Projeto
+## 🛠️ Como Executar o Projeto
 
-Para executar este projeto em sua máquina local, siga os passos abaixo.
+#### 1. Clone o Repositório
+```bash
+git clone https://github.com/G4rutti/basics-java/tree/main/src/BibliotecaComJDBC
+cd BibliotecaComJDBC
 
-**Pré-requisitos:**
-* Ter o [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/downloads/) instalado.
+-- Cria o banco de dados (se ainda não existir)
+CREATE DATABASE IF NOT EXISTS library;
 
-**Passos:**
+-- Seleciona o banco de dados para usar
+USE library;
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone [URL_DO_SEU_REPOSITORIO]
-    ```
+-- Cria a tabela para armazenar os livros
+CREATE TABLE IF NOT EXISTS Livro (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nomeLivro VARCHAR(255) NOT NULL,
+    autorLivro VARCHAR(255) NOT NULL,
+    anoPostagem INT,
+    disponivel BOOLEAN NOT NULL DEFAULT TRUE
+);
 
-2.  **Navegue até o diretório do projeto:**
-    ```bash
-    cd nome-do-repositorio
-    ```
+-- Em src/BibliotecaComJDBC/Database.java
+String url = "jdbc:mysql://127.0.0.1:3306/library"; // Mantenha se o MySQL estiver local na porta padrão
+String user = "root"; // Altere para o seu usuário do MySQL
+String password = "admin"; // Altere para a sua senha
 
-3.  **Compile os arquivos Java:**
-    (Assumindo que seus arquivos `.java` estão dentro de uma pasta `src/Biblioteca`)
-    ```bash
-    javac src/Biblioteca/*.java
-    ```
+javac -cp "caminho/para/mysql-connector-j-8.x.x.jar" src/BibliotecaComJDBC/*.java
 
-4.  **Execute a classe principal:**
-    ```bash
-    java -cp src Biblioteca.SistemaBiblioteca
-    ```
-    O menu interativo da biblioteca será exibido no seu console.
+# Para Windows
+java -cp "src;caminho/para/mysql-connector-j-8.x.x.jar" BibliotecaComJDBC.SistemaBiblioteca
 
-## 📂 Estrutura do Projeto
+# Para Linux/macOS
+java -cp "src:caminho/para/mysql-connector-j-8.x.x.jar" BibliotecaComJDBC.SistemaBiblioteca
 
+📂 Estrutura do Projeto
 /
 |-- src/
-|   |-- Biblioteca/
-|       |-- Livro.java             # Define o objeto Livro e seus comportamentos.
-|       |-- Biblioteca.java        # Define o acervo e gerencia a coleção de livros.
+|   |-- BibliotecaComJDBC/
+|       |-- Database.java          # Gerencia a conexão com o banco de dados.
+|       |-- Livro.java             # Objeto de modelo (POJO) que representa um livro.
+|       |-- LivroDAO.java          # Objeto de Acesso a Dados, responsável por toda a comunicação com a tabela Livro.
+|       |-- Biblioteca.java        # Classe de serviço que orquestra as operações.
 |       |-- SistemaBiblioteca.java # Classe principal com o método main e o menu interativo.
 |-- .gitignore
 |-- README.md
-
-
-## ✒️ Autor
-
-Projeto desenvolvido por **Davi Garutti**.
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/davigarutti/)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/SEU-USUARIO-DO-GITHUB)
-
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.

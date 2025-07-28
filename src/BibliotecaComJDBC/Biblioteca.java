@@ -34,6 +34,7 @@ public class Biblioteca {
 
     public void listarLivros() {
         String sql = "SELECT * FROM Livro";
+        LivroDAO livroDao = new LivroDAO();
 
         try (Connection conn = Database.getDatabase();
              Statement stmt = conn.createStatement();
@@ -49,28 +50,24 @@ public class Biblioteca {
                 Livro livro = new Livro(tituloLivro, autorLivro, anoPostagem);
 
                 if(!disponivel){
-                    livro.emprestar();
+                    livroDao.emprestar(livro);
                 }
 
                 acervo.add(livro);
+            }
 
-                if (acervo.isEmpty()) {
-                    System.out.println("Nenhum livro cadastrado no banco.");
-                } else {
-                    for (Livro l : acervo) {
-                        l.exibirInfo();
-                        System.out.println("-----------------------------");
-                    }
+            if (acervo.isEmpty()) {
+                System.out.println("Nenhum livro cadastrado no banco.");
+            } else {
+                for (Livro l : acervo) {
+                    l.exibirInfo();
+                    System.out.println("-----------------------------");
                 }
             }
 
         } catch (SQLException e) {
             System.err.println("Erro ao listar livros do banco.");
             e.printStackTrace();
-        }
-
-        for (Livro l : this.acervo) {
-            l.exibirInfo();
         }
     }
 
@@ -83,6 +80,4 @@ public class Biblioteca {
         }
         return null;
     }
-
-
 }
