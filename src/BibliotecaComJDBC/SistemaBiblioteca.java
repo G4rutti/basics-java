@@ -6,6 +6,7 @@ public class SistemaBiblioteca {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Biblioteca biblioteca = new Biblioteca();
+        LivroDAO livroDAO = new LivroDAO();
         int opcao = 5;
 
         do {
@@ -31,7 +32,7 @@ public class SistemaBiblioteca {
                     }
                     break;
                 case 2:
-                    biblioteca.listarLivros();
+                    livroDAO.listarLivros();
                     System.out.println();
                     break;
                 case 3:
@@ -52,26 +53,29 @@ public class SistemaBiblioteca {
 
     public void parteEstaticaAntiga() {
         Biblioteca minhaBiblioteca = new Biblioteca();
+        LivroDAO livroDAO = new LivroDAO();
+
         Livro livro1 = new Livro("O Senhor dos Anéis", "J.R.R. Tolkien", 1954);
         Livro livro2 = new Livro("1984", "George Orwell", 1949);
         Livro livro3 = new Livro("Dom Quixote", "Miguel de Cervantes", 1605);
 
-        minhaBiblioteca.addLivro(livro1);
-        minhaBiblioteca.addLivro(livro2);
-        minhaBiblioteca.addLivro(livro3);
+        livroDAO.addLivro(livro1);
+        livroDAO.addLivro(livro2);
+        livroDAO.addLivro(livro3);
 
         Livro livroPesquisa = minhaBiblioteca.buscarLivroPorTitulo("1984 diários");
         if (livroPesquisa != null) {
             System.out.println("Livro encontrado!");
 //            livroPesquisa.emprestar();
             System.out.println("------------------");
-            minhaBiblioteca.listarLivros();
+            livroDAO.listarLivros();
         } else {
             System.out.println("Livro não encontrado!");
         }
     }
 
     public static void adicionarLivro(Scanner scanner, Biblioteca biblioteca) {
+        LivroDAO livroDAO = new LivroDAO();
 
         System.out.print("Digite o nome do livro: ");
         String nomeLivro = scanner.nextLine();
@@ -83,7 +87,7 @@ public class SistemaBiblioteca {
         int anoLancamento = Integer.parseInt(scanner.nextLine());
 
         Livro livro = new Livro(nomeLivro, nomeAutor, anoLancamento);
-        biblioteca.addLivro(livro);
+        livroDAO.addLivro(livro);
 
         System.out.println("Livro adicionado com sucesso!");
         System.out.println();
